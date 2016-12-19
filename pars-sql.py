@@ -6,7 +6,7 @@ def data_path():
 		date_parse = str(raw_input('date parsing in form of dd_mm : '))
 	except(TypeError, ValueError):
 		print ('Input is date in the form of dd_mm')
-	data_path = '/home/denis/.tolk/' + date_parse + '.db'
+	data_path = '/home/bahu/.tolk/' + date_parse + '.db'
 	return data_path
 
 def db_create(data_path):
@@ -33,7 +33,7 @@ def db_insert(data_path):
 	import sqlite3 as sql
 	conn = sql.connect(data_path)
 	obj = conn.cursor()
-	src_file = '///home/denis/.tolk/rich-birds.com'
+	src_file = '///home/bahu/.tolk/rich-birds.com'
 	content = open(src_file,"r",1)
 	line = content.readline()
 	for line in content.readlines():
@@ -64,7 +64,7 @@ def db_insert(data_path):
 	conn.close()
 
 	
-data_path = '/home/denis/.tolk/21_11.db'
+data_path = '/home/bahu/.tolk/21_11.db'
 import scipy
 import sqlite3 as sql
 conn = sql.connect(data_path)

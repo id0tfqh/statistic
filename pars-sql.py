@@ -1,5 +1,5 @@
-import sqlite3 as sql
-import sys
+#import sqlite3 as sql
+#import sys
 
 def data_path():
 	try:
@@ -38,21 +38,20 @@ def db_insert(data_path):
 	line = content.readline()
 	for line in content.readlines():
 		line = str(line)
-		qline = line.split()
-		echo = qline[0]
-		time_local = float(qline[1])
-		http_host = qline[2]
-		cache_status = qline[3]
-		request_time = float(qline[4])
-		src_addr = qline[5]
-		dst_addr = qline[6]
-		type_request = qline[10]
-		request = qline[11]
-		proto = qline[12]
-		status = int(qline[13])
-		body_size = qline[14]
-		referer = qline[15]
-		user_a = ' '.join(qline[16:])
+		echo = line.split()[0]
+		time_local = float(line.split()[1])
+		http_host = line.split()[2]
+		cache_status = line.split()[3]
+		request_time = float(line.split()[4])
+		src_addr = line.split()[5]
+		dst_addr = line.split()[6]
+		type_request = line.split()[10]
+		request = line.split()[11]
+		proto = line.split()[12]
+		status = int(line.split()[13])
+		body_size = line.split()[14]
+		referer = line.split()[15]
+		user_a = ' '.join(line.split()[16:])
 		obj.execute("INSERT INTO parsing \
 		(echo,time_local, http_host, cache_status, \
 		request_time, src_addr, dst_addr, type_request, \

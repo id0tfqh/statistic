@@ -19,7 +19,7 @@ def db_create(data_path):
 		(echo TEXT, time_local REAL, http_host TEXT,\
 		cache_status TEXT, request_time REAL, src_addr TEXT,\
 		dst_addr TEXT, type_request TEXT, request TEXT,\
-		proto TEXT,	status INTEGER, body_size TEXT,\
+		proto TEXT, status INTEGER, body_size TEXT,\
 		referer TEXT, user_agent TEXT);""")
 	except sqlite.DatabaseError, err:
 		print u"Error:", err

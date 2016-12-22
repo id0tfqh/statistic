@@ -1,5 +1,8 @@
 #import sqlite3 as sql
-#import sys
+# Istall external standart encoding of utf8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 def data_path():
 	try:
@@ -35,9 +38,9 @@ def db_insert(data_path):
 	obj = conn.cursor()
 	src_file = '///home/bahu/rirds'
 	content = open(src_file,"r",1)
-	line = content.readline()
 	for line in content.readlines():
 		line = str(line)
+		line = line.decode('utf8')
 		echo = line.split()[0]
 		time_local = float(line.split()[1])
 		http_host = line.split()[2]
@@ -70,3 +73,18 @@ import sqlite3 as sql
 conn = sql.connect(data_path)
 obj = conn.cursor()
 obj.execute("SELECT echo FROM parsing")
+while echo is not None:
+     echo = obj.fetchone()[0]
+    
+
+obj.execute("SELECT DISTINCT time_local FROM parsing")
+while time_local is not None:
+    time_local = obj.fetchone()[0]
+  
+    
+obj.execute("SELECT DISTINCT user_agent FROM parsing")
+user_agent = obj.fetchone()[0]
+
+
+conn.commit()
+conn.close()

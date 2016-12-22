@@ -1,0 +1,10 @@
+
+ip address translate to binar format for statistic analys
+
+http://koldunov.net/?p=381 - scipy
+
+Если надо выбрать только неповторяющиеся значения поля [Field] таблицы [Table], то
+SELECT [Field] FROM [Table] GROUP BY [Field] HAVING COUNT(*)=1
+
+-- только уникальные записи
+SELECT DISTINCT t.num FROM tblname t;

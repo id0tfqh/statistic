@@ -55,14 +55,20 @@ def db_insert(data_path):
 		body_size = line.split()[14]
 		referer = line.split()[15]
 		user_a = ' '.join(line.split()[16:])
-		obj.execute("INSERT INTO parsing \
-		(echo,time_local, http_host, cache_status, \
-		request_time, src_addr, dst_addr, type_request, \
-		request, proto, status, body_size, referer, user_agent) \
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", \
-		(echo,time_local, http_host, cache_status, request_time, \
-		src_addr, dst_addr, type_request, request, proto, status, \
-		body_size, referer, user_a))
+		try:
+			obj.execute("INSERT INTO parsing\
+			(echo,time_local, http_host, cache_status,\
+			request_time, src_addr, dst_addr, type_request,\
+			request, proto, status, body_size, referer, user_agent)\
+			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",\
+			(echo,time_local, http_host, cache_status, request_time,\
+			 src_addr, dst_addr, type_request, request, proto, status,\
+			 body_size, referer, user_a))
+		except sqlite.DatabaseError, err:
+		except ValueError, err:
+		except UnicodeEncodeError, err:
+		except
+		except
 	conn.commit()
 	conn.close()
 

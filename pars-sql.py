@@ -37,7 +37,10 @@ def db_insert(data_path):
 	conn = sql.connect(data_path)
 	obj = conn.cursor()
 	src_file = '///home/bahu/rirds'
+	#err_file =  '///opt/pyt/error_file'
+	#error_content = open(err_file, "w", encoding="utf8)
 	content = open(src_file,"r",1)
+	#content = open(src_file, "r", encoding="utf8")
 	for line in content.readlines():
 		line = str(line)
 		line = line.decode('utf8')
@@ -65,8 +68,10 @@ def db_insert(data_path):
 			 src_addr, dst_addr, type_request, request, proto, status,\
 			 body_size, referer, user_a))
 		except sqlite.DatabaseError, err:
-		except ValueError, err:
+			error_content =
 		except UnicodeEncodeError, err:
+			
+		except ValueError, err:
 		except
 		except
 	conn.commit()

@@ -38,7 +38,7 @@ def db_insert(data_path):
 	obj = conn.cursor()
 	src_file = '///home/bahu/rirds'
 	err_file =  '///opt/pyt/error_file'
-	error_content = open(err_file, "w")
+	err_content = open(err_file, "w")
 	content = open(src_file,"r",1)
 	for line in content.readlines():
 		line = str(line)
@@ -67,14 +67,17 @@ def db_insert(data_path):
 			 src_addr, dst_addr, type_request, request, proto, status,\
 			 body_size, referer, user_a))
 		except sqlite.DatabaseError, err:
-			error_content.write(line + err)
+			err_content.write(line + err)
 		except UnicodeEncodeError, err:
-			error_content.write(line + err)
+			err_content.write(line + err)
 		except ValueError, err:
-			error_content.write(line + err)
+			err_content.write(line + err)
+		finally: pass
 
 	conn.commit()
 	conn.close()
+	err_content.close()
+	
 
 	
 data_path = '/home/bahu/21_11.db'

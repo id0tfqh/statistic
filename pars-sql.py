@@ -38,8 +38,8 @@ def db_insert(data_path):
 	obj = conn.cursor()
 	src_file = '///home/bahu/rirds'
 	err_file =  '///opt/pyt/error_file'
-	err_content = open(err_file, "w")
-	content = open(src_file,"r",1)
+	err_content = open(err_file, "wt")
+	content = open(src_file,"rt",1)
 	for line in content.readlines():
 		line = str(line)
 		line = line.decode('utf8')

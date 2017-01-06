@@ -7,6 +7,7 @@ ValueError: invalid literal for int() with base 10: '/300_2000_1/ee5b134db24db21
 
 # Error string in log file:
 split78 1470726326.518 "sia.com" HIT/24/24.98/25920.000 0.000 10.16.194.66 126.2.133.251 - [20/Nov/2016:18:05:26 +0300] "GET /upload/  resize_cache/iblock/ee5  /300_2000_1/ee5b134db24db21c6af627e68afef6f6.jpg HTTP/1.1" 200 35799 "http://sia.com/gover/" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/527.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36" -
+
 # Участок, который вызывет ошибку: 
 "GET /upload/  resize_cache/iblock/ee5  /300_2000_1/ee5b134db24db21c6af627e68afef6f6.jpg HTTP/1.1"
 # По идее запрос не должен содержать пробелов, но некоторые плевали на эти идеи.

@@ -1,8 +1,16 @@
-#import sqlite3 as sql
+import sqlite3 as sql
 # Istall external standart encoding of utf8
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
+import logging
+
+LOG_FILE = '///opt/pyt/error_file'
+SRC_FILE = '///home/bahu/rirds'
+
+log_level = logging.WARNING
+log_format = '%(asctime)s | line:%(lineno)d | %(levelname)-8s: %(message)s'
+logging.basicConfig(level=log_level, format=log_format, filename=LOG_FILE, filemode='w')
 
 def data_path():
 	try:
@@ -33,30 +41,26 @@ def db_create(data_path):
 
 
 def db_insert(data_path):
-	import sqlite3 as sql
 	conn = sql.connect(data_path)
 	obj = conn.cursor()
-	src_file = '///home/bahu/rirds'
-	err_file =  '///opt/pyt/error_file'
-	err_content = open(err_file, "wt")
-	content = open(src_file,"rt",1)
-	for line in content.readlines():
-		line = str(line)
-		line = line.decode('utf8')
-		echo = line.split()[0]
-		time_local = float(line.split()[1])
-		http_host = line.split()[2]
-		cache_status = line.split()[3]
-		request_time = float(line.split()[4])
-		src_addr = line.split()[5]
-		dst_addr = line.split()[6]
-		type_request = line.split()[10]
-		request = line.split()[11]
-		proto = line.split()[12]
-		status = int(line.split()[13])
-		body_size = line.split()[14]
-		referer = line.split()[15]
-		user_a = ' '.join(line.split()[16:])
+	with open(SRC_FILE,'rt',1) as content:
+		for line in content.readlines():
+		line =line.strip
+		ln = line.decode('utf8').split
+		echo = ln[0]
+		time_local = float(ln[1])
+		http_host = ln[2]
+		cache_status = ln[3]
+		request_time = float(ln[4])
+		src_addr = ln[5]
+		dst_addr = ln[6]
+		type_request = ln[10]
+		request = ln[11]
+		proto = ln[12]
+		status = int(ln[13])
+		body_size = ln[14]
+		referer = ln[15]
+		user_a = ' '.join(ln[16:])
 		try:
 			obj.execute("INSERT INTO parsing\
 			(echo,time_local, http_host, cache_status,\
@@ -66,13 +70,18 @@ def db_insert(data_path):
 			(echo,time_local, http_host, cache_status, request_time,\
 			 src_addr, dst_addr, type_request, request, proto, status,\
 			 body_size, referer, user_a))
-		except UnicodeEncodeError, err:
-			err_content.write(line)
-		except ValueError, err:
-			err_content.write(line)
+		except (UnicodeEncodeError, ValueError) as err:
+			logging.WARNING(line)
+			# logging.WARNING('{}: {}'.format(err, line))
+		except:
+			logging.ERROR(sys.exc_info())
+		finally:
+			pass
+			#print
+		
 	conn.commit()
 	conn.close()
-	err_content.close()
+	#err_content.close()
 	
 
 	

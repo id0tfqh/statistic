@@ -66,14 +66,10 @@ def db_insert(data_path):
 			(echo,time_local, http_host, cache_status, request_time,\
 			 src_addr, dst_addr, type_request, request, proto, status,\
 			 body_size, referer, user_a))
-		except sqlite.DatabaseError, err:
-			err_content.write(line + err)
 		except UnicodeEncodeError, err:
-			err_content.write(line + err)
+			err_content.write(line)
 		except ValueError, err:
-			err_content.write(line + err)
-		finally: pass
-
+			err_content.write(line)
 	conn.commit()
 	conn.close()
 	err_content.close()

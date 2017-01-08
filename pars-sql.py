@@ -45,7 +45,7 @@ def db_insert(data_path):
 	obj = conn.cursor()
 	with open(SRC_FILE,'rt',1) as content:
 		for line in content.readlines():
-			line =line.strip
+			#line =line.strip
 			ln = line.decode('utf8').split
 			echo = ln[0]
 			time_local = float(ln[1])

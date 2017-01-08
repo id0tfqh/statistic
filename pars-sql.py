@@ -45,40 +45,39 @@ def db_insert(data_path):
 	obj = conn.cursor()
 	with open(SRC_FILE,'rt',1) as content:
 		for line in content.readlines():
-		line =line.strip
-		ln = line.decode('utf8').split
-		echo = ln[0]
-		time_local = float(ln[1])
-		http_host = ln[2]
-		cache_status = ln[3]
-		request_time = float(ln[4])
-		src_addr = ln[5]
-		dst_addr = ln[6]
-		type_request = ln[10]
-		request = ln[11]
-		proto = ln[12]
-		status = int(ln[13])
-		body_size = ln[14]
-		referer = ln[15]
-		user_a = ' '.join(ln[16:])
-		try:
-			obj.execute("INSERT INTO parsing\
-			(echo,time_local, http_host, cache_status,\
-			request_time, src_addr, dst_addr, type_request,\
-			request, proto, status, body_size, referer, user_agent)\
-			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",\
-			(echo,time_local, http_host, cache_status, request_time,\
-			 src_addr, dst_addr, type_request, request, proto, status,\
-			 body_size, referer, user_a))
-		except (UnicodeEncodeError, ValueError) as err:
-			logging.WARNING(line)
-			# logging.WARNING('{}: {}'.format(err, line))
-		except:
-			logging.ERROR(sys.exc_info())
-		finally:
-			pass
-			#print
-		
+			line =line.strip
+			ln = line.decode('utf8').split
+			echo = ln[0]
+			time_local = float(ln[1])
+			http_host = ln[2]
+			cache_status = ln[3]
+			request_time = float(ln[4])
+			src_addr = ln[5]
+			dst_addr = ln[6]
+			type_request = ln[10]
+			request = ln[11]
+			proto = ln[12]
+			status = int(ln[13])
+			body_size = ln[14]
+			referer = ln[15]
+			user_a = ' '.join(ln[16:])
+			try:
+				obj.execute("INSERT INTO parsing\
+				(echo,time_local, http_host, cache_status,\
+				request_time, src_addr, dst_addr, type_request,\
+				request, proto, status, body_size, referer, user_agent)\
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",\
+				(echo,time_local, http_host, cache_status, request_time,\
+			 	src_addr, dst_addr, type_request, request, proto, status,\
+			 	body_size, referer, user_a))
+			except (UnicodeEncodeError, ValueError) as err:
+				logging.WARNING(line)
+				# logging.WARNING('{}: {}'.format(err, line))
+			except:
+				logging.ERROR(sys.exc_info())
+			finally:
+				pass
+				#print
 	conn.commit()
 	conn.close()
 	#err_content.close()

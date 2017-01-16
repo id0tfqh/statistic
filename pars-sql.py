@@ -46,7 +46,7 @@ def db_insert(data_path):
 	with open(SRC_FILE,'rt',1) as content:
 		for line in content.readlines():
 			#line =line.strip
-			ln = line.decode('utf8').split
+			ln = line.decode('utf8').split()
 			echo = ln[0]
 			time_local = float(ln[1])
 			http_host = ln[2]

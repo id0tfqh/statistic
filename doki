@@ -14,4 +14,7 @@
 
 # Руководство по работе с HTTP в Python - https://khashtamov.com/2015/12/python-requests/
 
-# 
+# pattern = 'HTTP/1...$'  re.search(pattern, ' '.join(ln[11:15])) is True
+re.search(pattern, ' '.join(ln[11:14])) is True
+re.search(pattern, ' '.join(ln[11:13])) is True
+re.search(pattern, ' '.join(ln[11:12])) is True

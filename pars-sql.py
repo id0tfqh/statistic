@@ -1,9 +1,13 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import sqlite3 as sql
 # Istall external standart encoding of utf8
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 import logging
+import re
 
 LOG_FILE = '///opt/pyt/error_file'
 SRC_FILE = '///home/bahu/rirds'
@@ -45,7 +49,6 @@ def db_insert(data_path):
 	obj = conn.cursor()
 	with open(SRC_FILE,'rt',1) as content:
 		for line in content.readlines():
-			#line =line.strip
 			ln = line.decode('utf8').split()
 			echo = ln[0]
 			time_local = float(ln[1])

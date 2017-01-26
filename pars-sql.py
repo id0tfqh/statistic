@@ -58,6 +58,19 @@ def db_insert(data_path):
 			src_addr = ln[5]
 			dst_addr = ln[6]
 			type_request = ln[10]
+			#request = ln[11:15]
+			#if  re.search(pattern_request, ' '.join(ln[11:15])) is None:
+			#	pass
+			#else: request = ln[11:14]
+			#elif re.search(pattern_request, ' '.join(ln[11:14])) is None:
+			#	pass
+			#else: request = ln[11:13]
+			#elif re.search(pattern_request, ' '.join(ln[11:13])) is None:
+			#	pass
+			#else: request = ln[11:12]
+			#elif re.search(pattern_request, ' '.join(ln[11:12])) is None:
+			#	pass
+			#else request = ln[11]
 			request = ln[11]
 			proto = ln[12]
 			status = int(ln[13])

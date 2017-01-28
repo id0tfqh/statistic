@@ -45,10 +45,23 @@ def db_create(data_path):
 
 
 def db_insert(data_path):
+	pattern_request = 'HTTP/..."$'
+	compile_re = re.compile(pattern_request)
+	def request(ln):
+		if compile_re.search(' '.join(ln[11:15])) is None: pass
+		else: request = ' '.join(ln[11:14])
+		if compile_re.search(' '.join(ln[11:14])) is None: pass
+		else: request = ' '.join(ln[11:13])
+		if compile_re.search(' '.join(ln[11:13])) is None: pass
+		else: request = ' '.join(ln[11:12])
+		if compile_re.search(' '.join(ln[11:12])) is None: pass
+		else: request = ln[11]
+		return	
 	conn = sql.connect(data_path)
 	obj = conn.cursor()
 	with open(SRC_FILE,'rt',1) as content:
 		for line in content.readlines():
+			line = str(line) # с ковычками может быть невыносимо как жутко в запросе
 			ln = line.decode('utf8').split()
 			echo = ln[0]
 			time_local = float(ln[1])
@@ -58,23 +71,14 @@ def db_insert(data_path):
 			src_addr = ln[5]
 			dst_addr = ln[6]
 			type_request = ln[10]
-			#request = ln[11:15]
-			#if  re.search(pattern_request, ' '.join(ln[11:15])) is None:
-			#	pass
-			#else: request = ln[11:14]
-			#elif re.search(pattern_request, ' '.join(ln[11:14])) is None:
-			#	pass
-			#else: request = ln[11:13]
-			#elif re.search(pattern_request, ' '.join(ln[11:13])) is None:
-			#	pass
-			#else: request = ln[11:12]
-			#elif re.search(pattern_request, ' '.join(ln[11:12])) is None:
-			#	pass
-			#else request = ln[11]
-			request = ln[11]
+			lequest(ln)
+			#request = ln[11]
 			proto = ln[12]
 			status = int(ln[13])
-			body_size = ln[14]
+			if body_size == '-':
+				body_size = 0
+			else: body_size = int(ln[14])	
+			#body_size = ln[14]
 			referer = ln[15]
 			user_a = ' '.join(ln[16:])
 			try:

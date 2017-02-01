@@ -75,7 +75,7 @@ def db_insert(data_path):
 			#request = ln[11]
 			proto = ln[12]
 			status = int(ln[13])
-			if body_size == '-':
+			if ln[14] == '-':
 				body_size = 0
 			else: body_size = int(ln[14])	
 			#body_size = ln[14]

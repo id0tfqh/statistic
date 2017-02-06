@@ -45,18 +45,18 @@ def db_create(data_path):
 
 
 def db_insert(data_path):
-	def request(ln):
+	def lequest(ln):
 		pattern_request = 'HTTP/..."$'
 		compile_re = re.compile(pattern_request)
 		if compile_re.search(' '.join(ln[11:15])) is None: pass
-		else: request = ' '.join(ln[11:14])
+		else: lequest = ' '.join(ln[11:14])
 		if compile_re.search(' '.join(ln[11:14])) is None: pass
-		else: request = ' '.join(ln[11:13])
+		else: lequest = ' '.join(ln[11:13])
 		if compile_re.search(' '.join(ln[11:13])) is None: pass
-		else: request = ' '.join(ln[11:12])
+		else: lequest = ' '.join(ln[11:12])
 		if compile_re.search(' '.join(ln[11:12])) is None: pass
-		else: request = ln[11]
-		return request
+		else: lequest = ln[11]
+		return lequest
 	conn = sql.connect(data_path)
 	obj = conn.cursor()
 	with open(SRC_FILE,'rt',1) as content:
@@ -71,7 +71,7 @@ def db_insert(data_path):
 			src_addr = ln[5]
 			dst_addr = ln[6]
 			type_request = ln[10]
-			lequest(ln)
+			request = lequest(ln)
 			#request = ln[11]
 			proto = ln[12]
 			status = int(ln[13])

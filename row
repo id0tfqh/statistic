@@ -26,7 +26,9 @@ elif re.search(pattern_request, ' '.join(ln[11:12])) is None:
 else request = ln[11]
 
 ping -I 186.2.164.38 94.75.227.164
+ping -I 192.168.122.1 -A -c 10 -p ff -s 1472 -t 128 190.115.19.42 -D -b
 
 telnet -b 186.2.163.197 185.148.37.49 80
 
 mtr -a 186.2.163.197 tbeTP 80 185.148.37.49 -r
+mtr -a 192.168.122.1 -TP 80 -tbe -B 255 190.115.19.42 -r

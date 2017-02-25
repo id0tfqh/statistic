@@ -25,10 +25,50 @@ elif re.search(pattern_request, ' '.join(ln[11:12])) is None:
 			pass
 else request = ln[11]
 
-ping -I 186.2.164.38 94.75.227.164
-ping -I 192.168.122.1 -A -c 10 -p ff -s 1472 -t 128 190.115.19.42 -D -b
 
+# soft ping
+ping -I 186.2.164.38 94.75.227.164
+
+# hard ping
+ping -I 192.168.122.1 -ADb -c 10 -p ff -s 1452 -t 128 190.115.19.42
+
+# telnet to 80 port
 telnet -b 186.2.163.197 185.148.37.49 80
 
-mtr -a 186.2.163.197 tbeTP 80 185.148.37.49 -r
-mtr -a 192.168.122.1 -TP 80 -tbe -B 255 190.115.19.42 -r
+# telnet to 443 port
+telnet -b 186.2.163.197 185.148.37.49 443
+
+# openssl connect to 443 port
+echo |openssl s_client -connect 186.2.161.78:443 -status
+openssl s_client -connect styduck.com:443 -servername styduck.com
+
+# sotf traceroute
+mtr -a 186.2.163.197 -tber 185.148.37.49
+
+# hard traceroute TCP
+mtr -a 192.168.122.1 -TP 80 -tber -B 255 190.115.19.42
+
+# hard traceroute UDP
+mtr -a 192.168.122.1 -UP 53 -tber -B 255 190.115.19.42
+
+# TCPtraceroute to 80 port
+tcptraceroute -NFE -m 72 -l 1400 --dnat ya.ru 80
+
+# TCPtraceroute to 443 port
+tcptraceroute -NFE -m 72 -l 1400 --dnat ya.ru 443
+
+# GET request
+import httplib
+conn = httplib.HTTPConnection("unrix.com")
+conn.request("GET","/")
+res = conn.getresponse()
+print res.status, res.reason
+conn.close()
+
+# POST request
+import httplib
+conn = httplib.HTTPConnection("unrix.com")
+conn.request("POST","/")
+res = conn.getresponse()
+print res.status, res.reason
+conn.close()

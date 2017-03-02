@@ -72,3 +72,80 @@ conn.request("POST","/")
 res = conn.getresponse()
 print res.status, res.reason
 conn.close()
+
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+import httplib
+
+###src = raw_input('input source address :')
+dst = raw_input('input destination address :')
+dst_tls = dst+':443'
+
+os.system('echo {0}'.format(src))
+
+# soft ping
+os.system('ping -I src -c 10 dst')
+# echo 21
+os.system('ping -c 10 -I 186.2.163.251 {0}'.format(dst))
+# echo 22
+os.system('ping -c 10 -I 186.2.163.252 {0}'.format(dst))
+# echo 22
+os.system('ping -c 10 -I 186.2.163.253 {0}'.format(dst))
+
+# hard ping
+os.system('ping -I src -ADb -c 10 -p ff -s 1452 -t 128 dst')
+# echo 21
+os.system('ping -I 186.2.163.251 -ADb -c 10 -p ff -s 1452 -t 128 {0}'.format(dst))
+# echo 22
+os.system('ping -I 186.2.163.252 -ADb -c 10 -p ff -s 1452 -t 128 {0}'.format(dst))
+# echo 41
+os.system('ping -I 186.2.163.253 -ADb -c 10 -p ff -s 1452 -t 128 {0}'.format(dst))
+
+# openssl connect to 443 port
+os.system('echo |openssl s_client -connect dst:443 -status')
+# echo 21
+s.system('echo |openssl s_client -status -connect {0}'.format(dst_tls))
+# echo 22
+s.system('echo |openssl s_client -connect -status {0}'.format(dst_tls))
+# echo 4dst1
+s.system('echo |openssl s_client -connect -status {0}'.format(dst_tls))
+#openssl s_client -connect styduck.com:443 -servername styduck.com
+
+# sotf traceroute
+os.system('mtr -a src -tber dst')
+
+# hard traceroute TCP
+os.system('mtr -a src -TP 80 -tber -B 255 dst')
+
+# hard traceroute UDP
+os.system('mtr -a 192.168.122.1 -UP 53 -tber -B 255 dst')
+
+# TCPtraceroute to 80 port
+os.system('tcptraceroute -NFE -m 72 -l 1400 --dnat dst 80')
+
+# TCPtraceroute to 443 port
+os.system('tcptraceroute -NFE -m 72 -l 1400 --dnat dst 443')
+
+# telnet to 80 port
+os.system('telnet -b src dst 80')
+
+# telnet to 443 port
+os.system('telnet -b src dst 443')
+
+# GET request
+import httplib
+conn = httplib.HTTPConnection("dst")
+conn.request("GET","/")
+res = conn.getresponse()
+print res.status, res.reason
+conn.close()
+
+# POST request
+import httplib
+conn = httplib.HTTPConnection("dst")
+conn.request("POST","/")
+res = conn.getresponse()
+print res.status, res.reason
+conn.close()

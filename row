@@ -79,73 +79,80 @@ conn.close()
 import os
 import httplib
 
-###src = raw_input('input source address :')
 dst = raw_input('input destination address :')
-dst_tls = dst+':443'
 
-os.system('echo {0}'.format(src))
+def ping(dst):
+	try:
+		os.system('ping -c 10 -I 192.168.122.1 {0}'.format(dst))
+	except ValueError: print('Address error')
+	try:
+		os.system('ping -I 192.168.122.1 -ADb -c 10 -p ff -s 1452 -t 128 {0}'.format(dst))
+	except ValueError: print('Address error')
+	return
 
-# soft ping
-os.system('ping -I src -c 10 dst')
-# echo 21
-os.system('ping -c 10 -I 186.2.163.251 {0}'.format(dst))
-# echo 22
-os.system('ping -c 10 -I 186.2.163.252 {0}'.format(dst))
-# echo 22
-os.system('ping -c 10 -I 186.2.163.253 {0}'.format(dst))
+def trace(dst):
+	try:
+		print('-----------------')
+		print('ICMP traceroute')
+		os.system('mtr -a 192.168.122.1 -tber {0}'.format(dst))
+		print('-----------------')
+		print('TCP traceroute')
+		os.system('mtr -a 192.168.122.1 -TP 80 -tber -B 255 {0}'.format(dst))
+		print('-----------------')
+		print('UDP traceroute')
+		os.system('mtr -a 192.168.122.1 -uP 53 -tber -B 255 {0}'.format(dst))
+	except ValueError: print('Address error')
+	return
+	
+def request(dst):
+	try:
+		get_rqst = ('HTTP request method GET to festination: ') + repr(dst)
+		print(get_rqst)
+		conn = httplib.HTTPConnection(dst)
+		conn.request("GET","/")
+		res = conn.getresponse()
+		print res.status, res.reason
+		conn.close()
+		post_rqst = ('HTTP request method POST to festination: ') + repr(dst)
+		print(post_rqst)
+		conn = httplib.HTTPConnection(dst)
+		conn.request("POST","/")
+		res = conn.getresponse()
+		print res.status, res.reason
+		conn.close()
+	except ValueError: print('Address error')
+	return
 
-# hard ping
-os.system('ping -I src -ADb -c 10 -p ff -s 1452 -t 128 dst')
-# echo 21
-os.system('ping -I 186.2.163.251 -ADb -c 10 -p ff -s 1452 -t 128 {0}'.format(dst))
-# echo 22
-os.system('ping -I 186.2.163.252 -ADb -c 10 -p ff -s 1452 -t 128 {0}'.format(dst))
-# echo 41
-os.system('ping -I 186.2.163.253 -ADb -c 10 -p ff -s 1452 -t 128 {0}'.format(dst))
+ping(dst)
+trace(dst)
+print('-------------------------------')
+request(dst)
+print('===============================')
+print('                               ')
+print('                               ')
 
 # openssl connect to 443 port
-os.system('echo |openssl s_client -connect dst:443 -status')
-# echo 21
-s.system('echo |openssl s_client -status -connect {0}'.format(dst_tls))
-# echo 22
-s.system('echo |openssl s_client -connect -status {0}'.format(dst_tls))
-# echo 4dst1
-s.system('echo |openssl s_client -connect -status {0}'.format(dst_tls))
-#openssl s_client -connect styduck.com:443 -servername styduck.com
+tls_request = 'TLS request to destination: ' + repr(dst)
+print(tls_request)
+try:
+	os.system('echo |openssl s_client -status -connect {0}:{1}'.format(dst,443))
+except ValueError: print('Address error')
 
-# sotf traceroute
-os.system('mtr -a src -tber dst')
+print('===============================')
 
-# hard traceroute TCP
-os.system('mtr -a src -TP 80 -tber -B 255 dst')
-
-# hard traceroute UDP
-os.system('mtr -a 192.168.122.1 -UP 53 -tber -B 255 dst')
-
-# TCPtraceroute to 80 port
-os.system('tcptraceroute -NFE -m 72 -l 1400 --dnat dst 80')
-
-# TCPtraceroute to 443 port
-os.system('tcptraceroute -NFE -m 72 -l 1400 --dnat dst 443')
+print('                               ')
+print('                               ')
 
 # telnet to 80 port
-os.system('telnet -b src dst 80')
+tln_80 = 'Telnet connect to 80 port destination: ' + repr(dst)
+print(tln_80)
+try:
+	os.system('telnet -b 192.168.122.1 {0} {1}'.format(dst,80))
+except ValueError: print('Address error')
 
 # telnet to 443 port
-os.system('telnet -b src dst 443')
-
-# GET request
-import httplib
-conn = httplib.HTTPConnection("dst")
-conn.request("GET","/")
-res = conn.getresponse()
-print res.status, res.reason
-conn.close()
-
-# POST request
-import httplib
-conn = httplib.HTTPConnection("dst")
-conn.request("POST","/")
-res = conn.getresponse()
-print res.status, res.reason
-conn.close()
+#tln_443 = 'Telnet connect to 443 port destination: ' + repr(dst)
+#print(tln_443)
+#try:
+#	os.system('telnet -b 192.168.122.1 {0} {1}'.format(dst,443))
+#except ValueError: print('Address error')

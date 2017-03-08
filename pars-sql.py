@@ -35,7 +35,7 @@ def db_create(data_path):
 		cache_status TEXT, request_time REAL, src_addr TEXT,\
 		dst_addr TEXT, type_request TEXT, request TEXT,\
 		proto TEXT, status INTEGER, body_size TEXT,\
-		referer TEXT, user_agent TEXT);""")
+		referer TEXT, user_agent TEXT, row_string TXT);""")
 	except sqlite.DatabaseError, err:
 		print u"Error:", err
 	else:
@@ -75,10 +75,7 @@ def db_insert(data_path):
 			#request = ln[11]
 			proto = ln[12]
 			status = int(ln[13])
-			if ln[14] == '-':
-				body_size = 0
-			else: body_size = int(ln[14])	
-			#body_size = ln[14]
+			body_size = ln[14]
 			referer = ln[15]
 			user_a = ' '.join(ln[16:])
 			try:
@@ -90,11 +87,13 @@ def db_insert(data_path):
 				(echo,time_local, http_host, cache_status, request_time,\
 			 	src_addr, dst_addr, type_request, request, proto, status,\
 			 	body_size, referer, user_a))
-			except (UnicodeEncodeError, ValueError) as err:
-				logging.WARNING(line)
-				# logging.WARNING('{}: {}'.format(err, line))
-			except:
-				logging.ERROR(sys.exc_info())
+			except (UnicodeEncodeError, ValueError):
+				obj.execute("INSERT INTO parsing\
+				(echo, time_local, http_host, cache_status,\
+				request_time, src_addr, dst_addr, type_request,\
+				row_string)VALUES (?,?,?,?,?,?,?,?,?)",\
+				(echo,time_local, http_host, cache_status, request_time,\
+				src_addr, dst_addr, type_request, row_string))
 			finally:
 				pass
 				#print

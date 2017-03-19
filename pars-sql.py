@@ -33,7 +33,7 @@ def db_create(data_path):
 		CREATE TABLE IF NOT EXISTS parsing\
 		(echo TEXT, time_local REAL, http_host TEXT,\
 		cache_status TEXT, request_time REAL, src_addr TEXT,\
-		dst_addr TEXT, type_request TEXT, request TEXT,\
+		dst_addr TEXT, type_request TEXT, request BINARY,\
 		proto TEXT, status INTEGER, body_size TEXT,\
 		referer TEXT, user_agent TEXT, row_string TXT);""")
 	except sqlite.DatabaseError, err:
@@ -59,8 +59,8 @@ def db_insert(data_path):
 		return quest
 	conn = sql.connect(data_path)
 	obj = conn.cursor()
-	with open(SRC_FILE,'rt',1) as content:
-		for line in content.readlines():
+	with open(SRC_FILE,'r',1) as content:
+		for line in content:
 			line = str(line) # с ковычками может быть невыносимо как жутко в запросе
 			ln = line.decode('utf8').split()
 			echo = ln[0]
@@ -72,7 +72,7 @@ def db_insert(data_path):
 			dst_addr = ln[6]
 			type_request = ln[10]
 			request = quest(ln)
-			#request = ln[11]
+			#request = ln[11] # попробовать писать в базу в бинарном формате
 			proto = ln[12]
 			status = int(ln[13])
 			body_size = ln[14]

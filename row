@@ -92,13 +92,13 @@ def ping(dst):
 
 def trace(dst):
 	try:
-		print('-----------------')
+		print'-'*20
 		print('ICMP traceroute')
 		os.system('mtr -a 192.168.122.1 -tber {0}'.format(dst))
-		print('-----------------')
+		print'-'*20
 		print('TCP traceroute')
 		os.system('mtr -a 192.168.122.1 -TP 80 -tber -B 255 {0}'.format(dst))
-		print('-----------------')
+		print'-'*20
 		print('UDP traceroute')
 		os.system('mtr -a 192.168.122.1 -uP 53 -tber -B 255 {0}'.format(dst))
 	except ValueError: print('Address error')
@@ -125,23 +125,22 @@ def request(dst):
 
 ping(dst)
 trace(dst)
-print('-------------------------------')
+print "-" * 60
 request(dst)
-print('===============================')
-print('                               ')
-print('                               ')
+print'='*60
+print' '*60
+print' '*60
 
 # openssl connect to 443 port
 tls_request = 'TLS request to destination: ' + repr(dst)
 print(tls_request)
 try:
-	os.system('echo |openssl s_client -status -connect {0}:{1}'.format(dst,443))
+	os.system('echo |openssl s_client -status -connect {0}:{1} {2} {3}'.format(dst,443,'|','tail'))
 except ValueError: print('Address error')
 
-print('===============================')
-
-print('                               ')
-print('                               ')
+print'='*60
+print' '*60
+print' '*60
 
 # telnet to 80 port
 tln_80 = 'Telnet connect to 80 port destination: ' + repr(dst)

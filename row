@@ -72,3 +72,127 @@ conn.request("POST","/")
 res = conn.getresponse()
 print res.status, res.reason
 conn.close()
+
+
+
+### Ruslan check
+
+#!/usr/bin/python
+import os, sys, socket, time, threading, Queue, ssl #? ssl socket
+
+servers = ["10.0.6.130", "10.0.9.3", "10.0.9.2", "10.0.8.1", "10.0.2.3", "10.0.2.70", "10.0.4.98"]
+saddr = ''                          # all
+user = 'ruslan'                     # user binded for ssh session
+if len(sys.argv) > 1:               # def port 4444 or custom
+    sport = int(sys.argv[1])
+else:
+    sport = 4444
+
+
+log = open('./fwapi.log','a',0)     # log open and define
+def tolog(m):
+    log.write ( time.strftime("%H:%M:%S %d-%m-%Y") + "\t" + m + "\n" )
+
+class tclass:
+    def __init__(self):             #  Multi thread class
+        self.lst = None             # do -> start check/del threads -> resp to queue
+        self.queue = Queue.Queue()  # return list or errno
+
+    def do(self,type):
+        resp = ""
+        res = 0
+        tlist = []
+        for h in servers:
+            t = threading.Thread(target=self.thrd, args=(type,h))
+            tlist.append(t)
+        for thread in tlist:
+            thread.start()
+        for thread in tlist:
+            thread.join()
+        if (type == 0) or (type == 1) :
+            if not self.queue.empty():
+                while not self.queue.empty():
+                    resp = resp + self.queue.get()
+            if not resp :
+                return -1
+            else:
+                return resp
+        elif type == 2 :
+            if not self.queue.empty():
+                while not self.queue.empty():
+                    res = res + int(self.queue.get())
+            if (res == 0):
+                return -1
+            else:
+                return 0
+
+    def thrd(self, c, host):
+        if c == 0 :
+            r = os.popen("ssh -l " + user + " " + host + " \'sudo ipset save | grep -wP \"" + "|".join(self.lst) + "\" | cut -d\" \" -f2-\'" ).read()
+        elif c == 1 :
+            r = os.popen("ssh -l " + user + " " + host + " \'sudo ipset save | grep -wP \"" + "|".join(self.lst) + "\" | grep \"BAN\" | cut -d\" \" -f2-\'" ).read()
+        elif c == 2 :
+            r = os.popen("ssh -l " + user + " " + host + " \'if sudo ipset save | grep -wP \"" + "|".join(self.lst) + "\"| grep \"BAN\" | cut -d\" \" -f1,2,3 | perl -lape \"s/add/ipset del/g\" > ./tmp.sh && chmod +x ./tmp.sh && test -s tmp.sh ; then sudo ./tmp.sh && echo 1 ; else echo 0; fi && rm ./tmp.sh\'").read()
+        self.queue.put(r)
+        self.queue.task_done()
+
+def main():                       #  Working with socket loop
+    tolog("Start")                # accept -> check args -> call mthread from class
+    sock = socket.socket()        # return resp to socket,log -> close
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.bind((saddr,sport))
+    sock.listen(10)
+
+    while True:
+        nsock, caddr = sock.accept()
+        data = nsock.recv(1024)
+        data = data.split(' ')
+        req_method = data.pop(0)  # req_method: method , data:req_ips
+        ips = []
+        ippass = True
+        for i in data:
+            i = i.rstrip('\n')
+            ips.append(i)
+            try: socket.inet_aton(i.rstrip('\n'))
+            except socket.error:
+                ippass = False
+                break
+        if not ippass :
+            tolog("Invalid IP \"" + i + "\" from " + str(caddr[0]))
+            nsock.send("ERROR: Invalid IP\n")
+            nsock.close()
+            continue
+
+        thread = tclass()
+        thread.lst = ips
+
+        if req_method == "checkall":
+            bips = thread.do(0)
+            if bips == -1 :
+                nsock.send("Not in list")
+            else:
+                nsock.send(bips)
+
+        elif req_method == "check":
+            bips = thread.do(1)
+            if bips == -1 :
+                nsock.send("Not banned")
+            else:
+                nsock.send(bips)
+
+        elif req_method == "del":
+            bips = thread.do(2)
+            if bips == -1 :
+                nsock.send("Nothing to unban")
+            else:
+                nsock.send("Unbanned")
+                tolog("Unban \"" + "|".join(ips) + "\" from " + str(caddr[0]))
+
+        else:
+            tolog("Invalid method \"" + req_method + "\" from " + str(caddr[0]))
+            nsock.send("ERROR: Invalid method\n")
+
+        del thread, ips
+        nsock.close()
+
+main()

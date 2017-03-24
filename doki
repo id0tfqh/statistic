@@ -18,6 +18,12 @@
 
 # Много разного интересного и полезного - http://www.pythonforbeginners.com/
 
+# Программирование на Python: Часть 9. Процессы и потоки - https://www.ibm.com/developerworks/ru/library/l-python_part_9/index.html
+
+# Многопоточность в одну строку (Map) - https://toly.github.io/blog/2014/02/13/parallelism-in-one-line/
+
+# Многопоточные вычисления - http://ideafix.name/wp-content/uploads/2012/07/Python-11.pdf
+
 # pattern = 'HTTP/1...$'  re.search(pattern, ' '.join(ln[11:15])) is True
 re.search(pattern, ' '.join(ln[11:14])) is True
 re.search(pattern, ' '.join(ln[11:13])) is True

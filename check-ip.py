@@ -26,3 +26,13 @@ def check(command):
 	os.system('ssh -24xCt denis@{0} {1} {2}'.format('echo21','sudo',command))
 p1 = threading.Thread(target=check, name="t1", args=command)
 p1.start()
+
+#def check_ip(server, command):
+#	os.system('ssh -24xCt denis@{0} {1} {2}'.format(server,'sudo',command))
+
+#check1 = threading.Thread(target=check_ip, args = ('echo21', command))
+#check1 = threading.Thread(target=check_ip, args = ('echo22', command))
+#check1 = threading.Thread(target=check_ip, args = ('echo41', command))
+#check1 = threading.Thread(target=check_ip, args = ('delta91', command))
+#check1 = threading.Thread(target=check_ip, args = ('delta92', command))
+#check1 = threading.Thread(target=check_ip, args = ('delta8', command))

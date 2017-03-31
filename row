@@ -196,3 +196,33 @@ def main():                       #  Working with socket loop
         nsock.close()
 
 main()
+
+
+
+#### узнать тип ОС
+os.uname()[3]
+
+## точнее вариант - работает в centos, debian, ubuntu
+import platform
+platform.linux_distribution()[0]
+
+if 'Ubuntu' in platform.linux_distribution()[0]:
+     if [0] == [os.system('dpkg --get-selections | grep docker')]:
+         print 'ok'
+     else: 
+		 print 'need install'
+		 os.system('sudo apt-get install docker -y')
+		 
+if 'Debian' in platform.linux_distribution()[0]:
+     if [0] == [os.system('dpkg --get-selections | grep docker')]:
+         print 'ok'
+     else: 
+		 print 'need install'
+		 os.system('sudo apt-get install docker -y')
+		 
+if 'CentOS' in platform.linux_distribution()[0]:
+     if [0] == [os.system('rpm -qa | grep docker')]:
+         print 'ok'
+     else: 
+		 print 'need install'
+		 os.system('sudo yum install docker -y')

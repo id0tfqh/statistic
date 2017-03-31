@@ -199,10 +199,10 @@ main()
 
 
 
-#### узнать тип ОС
+### узнать тип ОС
 os.uname()[3]
 
-## точнее вариант - работает в centos, debian, ubuntu
+### точнее вариант - работает в centos, debian, ubuntu
 import platform
 platform.linux_distribution()[0]
 
@@ -226,3 +226,7 @@ if 'CentOS' in platform.linux_distribution()[0]:
      else: 
 		 print 'need install'
 		 os.system('sudo yum install docker -y')
+
+### download file
+1 - http://python-lab.blogspot.ru/2012/06/python-101.html
+2 - http://www.cyberforum.ru/python-web/thread1746144.html

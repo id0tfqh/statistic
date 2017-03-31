@@ -230,3 +230,4 @@ if 'CentOS' in platform.linux_distribution()[0]:
 ### download file
 1 - http://python-lab.blogspot.ru/2012/06/python-101.html
 2 - http://www.cyberforum.ru/python-web/thread1746144.html
+3 - http://www.pvsm.ru/pesochnitsa/86767

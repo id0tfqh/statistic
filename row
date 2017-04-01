@@ -211,7 +211,16 @@ if 'Ubuntu' in platform.linux_distribution()[0]:
          print 'ok'
      else: 
 		 print 'need install'
-		 os.system('sudo apt-get install docker -y')
+		 os.system('sudo apt-get update')
+		 os.system('sudo apt-key adv --keyserver \
+		 hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D')
+		 os.system('sudo apt-add-repository \
+		 "deb https://apt.dockerproject.org/repo ubuntu-xenial main"')
+		 os.system('sudo apt-get update')
+		 os.system('apt-cache policy docker-engine')
+		 os.system('sudo apt-get install docker-engine -y')
+		 os.system('sudo systemctl status docker')
+		 
 		 
 if 'Debian' in platform.linux_distribution()[0]:
      if [0] == [os.system('dpkg --get-selections | grep docker')]:
@@ -224,10 +233,51 @@ if 'CentOS' in platform.linux_distribution()[0]:
      if [0] == [os.system('rpm -qa | grep docker')]:
          print 'ok'
      else: 
-		 print 'need install'
-		 os.system('sudo yum install docker -y')
+		 print 'Need is install'
+		 os.system('sudo yum install yum-utils -y')
+		 os.system('sudo yum-config-manager \
+		 --add-repo \
+		 https://download.docker.com/linux/centos/docker-ce.repo')
+		 os.system('sudo yum makecache fast')
+		 os.system('sudo yum -y install docker-ce')
+		 os.system('sudo systemctl start docker')
+		 os.system('sudo systemctl status docker')
+		 
+
+docker pull sameersbn/postgresql:9.6-2
+
+# Download file
+
+def geturl(url):
+    try: 
+        resource = urllib.request.urlopen(url )
+        doc = resource.read()
+        print('Загружено')
+        return doc
+    except urllib.error.HTTPError:
+        print('Ошибка соединения')
+        return 
+    except urllib.error.URLError:
+        print('Неверный адрес')
+        return 
+    
+doc = geturl('https://yadi.sk/d/kpiCWZ_as2Ksv')
+with open('aipi.txt','wb') as file:
+    file.write(doc)
+    
+    
+#Use our custom data directory (/data/main) & .hba file:
+
+sed -i '/^data_directory*/ s|/var/lib/postgresql/9.3/main|/data/main|' /data/postgresql.conf
+sed -i '/^hba_file*/ s|/etc/postgresql/9.3/main/pg_hba.conf|/data/pg_hba.conf|' /data/postgresql.conf
 
 ### download file
 1 - http://python-lab.blogspot.ru/2012/06/python-101.html
 2 - http://www.cyberforum.ru/python-web/thread1746144.html
 3 - http://www.pvsm.ru/pesochnitsa/86767
+4 - https://hub.docker.com/r/sameersbn/postgresql/
+5 - https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
+6 - https://www.mvoronin.pro/ru/blog/post-118
+7 - http://amattn.com/p/tutorial_postgresql_usage_examples_with_docker.html
+8 - https://store.docker.com/editions/community/docker-ce-server-centos?tab=description
+9 - https://www.liquidweb.com/kb/how-to-install-docker-on-centos-7/

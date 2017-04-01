@@ -210,7 +210,7 @@ if 'Ubuntu' in platform.linux_distribution()[0]:
      if [0] == [os.system('dpkg --get-selections | grep docker')]:
          print 'ok'
      else: 
-		 print 'need install'
+		 print 'Need is install'
 		 os.system('sudo apt-get update')
 		 os.system('sudo apt-key adv --keyserver \
 		 hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D')
@@ -219,6 +219,7 @@ if 'Ubuntu' in platform.linux_distribution()[0]:
 		 os.system('sudo apt-get update')
 		 os.system('apt-cache policy docker-engine')
 		 os.system('sudo apt-get install docker-engine -y')
+		 os.system('sudo systemctl enable docker')
 		 os.system('sudo systemctl status docker')
 		 
 		 
@@ -226,8 +227,19 @@ if 'Debian' in platform.linux_distribution()[0]:
      if [0] == [os.system('dpkg --get-selections | grep docker')]:
          print 'ok'
      else: 
-		 print 'need install'
-		 os.system('sudo apt-get install docker -y')
+		 print 'Need is install'
+		 os.system('sudo apt-get install -y apt-transport-https \
+		 ca-certificates curl \
+		 python-software-properties')
+		 os.system('curl -fsSL \
+		 https://download.docker.com/linux/debian/gpg |sudo apt-key add -')
+		 os.system('sudo add-apt-repository \
+		 "deb [arch=amd64] https://download.docker.com/linux/debian \
+		 $(lsb_release -cs) stable"')
+		 os.system('sudo apt-get update')
+		 os.system('sudo apt-get install docker-ce')
+		 os.system('sudo systemctl start docker')
+		 os.system('sudo systemctl enable docker')
 		 
 if 'CentOS' in platform.linux_distribution()[0]:
      if [0] == [os.system('rpm -qa | grep docker')]:
@@ -241,6 +253,7 @@ if 'CentOS' in platform.linux_distribution()[0]:
 		 os.system('sudo yum makecache fast')
 		 os.system('sudo yum -y install docker-ce')
 		 os.system('sudo systemctl start docker')
+		 os.system('sudo systemctl enable docker')
 		 os.system('sudo systemctl status docker')
 		 
 

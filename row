@@ -223,7 +223,7 @@ if 'Ubuntu' in platform.linux_distribution()[0]:
 		 os.system('sudo systemctl status docker')
 		 
 		 
-if 'Debian' in platform.linux_distribution()[0]:
+elif 'Debian' in platform.linux_distribution()[0]:
      if [0] == [os.system('dpkg --get-selections | grep docker')]:
          print 'ok'
      else: 
@@ -241,7 +241,7 @@ if 'Debian' in platform.linux_distribution()[0]:
 		 os.system('sudo systemctl start docker')
 		 os.system('sudo systemctl enable docker')
 		 
-if 'CentOS' in platform.linux_distribution()[0]:
+elif 'CentOS' in platform.linux_distribution()[0]:
      if [0] == [os.system('rpm -qa | grep docker')]:
          print 'ok'
      else: 
